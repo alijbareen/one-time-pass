@@ -31,10 +31,15 @@ module.exports = function (req, res) {
             .createCustomToken(phone)
             .then((token) => {
               res.send({ token: token });
+              return;
+            })
+            .catch((err) => {
+              return res.status(422).send({ error: err });
             });
         });
+      return;
     })
     .catch((res) => {
-      res.status(422).send({ error: err });
+      return res.status(422).send({ error: err });
     });
 };

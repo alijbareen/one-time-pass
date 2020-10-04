@@ -14,22 +14,25 @@ module.exports = function (req, res) {
     .auth()
     .getUser(phone)
     .then(() => {
-      admin.database.ref("users/" + phone).on("value", (snapshot) => {
-        const user = snapshot.val();
+      const ref = admin.database
+        .ref("users/" + phone)
+        .on("value", (snapshot) => {
+          ref.off();
+          const user = snapshot.val();
 
-        if (user.code !== code || !user.codeValid) {
-          return res.status(422).send({ error: "Code not Valid" });
-        }
+          if (user.code !== code || !user.codeValid) {
+            return res.status(422).send({ error: "Code not Valid" });
+          }
 
-        ref.update({ codeValid: false });
+          ref.update({ codeValid: false });
 
-        admin
-          .auth()
-          .createCustomToken(phone)
-          .then((token) => {
-            res.send({ token: token });
-          });
-      });
+          admin
+            .auth()
+            .createCustomToken(phone)
+            .then((token) => {
+              res.send({ token: token });
+            });
+        });
     })
     .catch((res) => {
       res.status(422).send({ error: err });

@@ -3,7 +3,7 @@
 const admin = require("firebase-admin");
 const serviceAccount = require("./service_account.json");
 const functions = require("firebase-functions");
-
+const request_one_time_password = require("./request_one_time_password");
 const createUser = require("./create_user");
 
 admin.initializeApp({
@@ -13,3 +13,6 @@ admin.initializeApp({
 
 //function to create user
 exports.createUser = functions.https.onRequest(createUser);
+exports.request_one_time_password = functions.https.onRequest(
+  request_one_time_password
+);

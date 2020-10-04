@@ -1,4 +1,4 @@
-const { admin } = require("firebase-admin/lib/database");
+const { admin } = require("firebase-admin");
 const { ref } = require("firebase-functions/lib/providers/database");
 
 module.exports = function (req, res) {
